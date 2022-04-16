@@ -52,7 +52,7 @@ export function createThreadPool<W>({
 }): ThreadPool<W> {
 
 
-if(typeof created!=="function"){
+if(typeof create!=="function"){
 throw Error("expect create to be function:"+create)
 }
 
