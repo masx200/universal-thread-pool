@@ -1,4 +1,4 @@
-Deno.test("ThreadPool", async () => {
+Deno.test("ThreadPool-worker", async () => {
     const pool = createThreadPool({
         create: () => create_remote(error_event_listener),
         terminate(w) {
