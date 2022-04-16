@@ -10,10 +10,13 @@ https://www.npmjs.com/package/comlink
 
 ## 导入模块
 
+指定版本号
 ```ts
-import {} from "https://deno.land/x/masx200_universal_thread_pool@1.0.1/mod.ts";
+import {} from "https://deno.land/x/masx200_universal_thread_pool@1.0.3/mod.ts";
 ```
-
+```ts
+import {} from "https://cdn.jsdelivr.net/gh/masx200/universal-thread-pool@1.0.3/mod.ts"
+```
 ### `createThreadPool`:创建线程池,
 
 接受必选参数`create`:创建抽象线程的函数
