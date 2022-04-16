@@ -9,6 +9,7 @@ Deno.test("ThreadPool-worker", async () => {
     // console.log(pool);
     const error_event_listener = function (this: Worker, event: ErrorEvent) {
         console.warn("Error event:", event);
+throw event
     };
     const tasks = [
         ...Array.from(
