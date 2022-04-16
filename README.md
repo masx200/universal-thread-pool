@@ -8,6 +8,12 @@ Universal thread pool 通用线程池
 
 https://www.npmjs.com/package/comlink
 
+## 导入模块
+
+```ts
+import {} from "https://deno.land/x/masx200_universal_thread_pool/@1.0.0/mod.ts";
+```
+
 ### `createThreadPool`:创建线程池,
 
 接受参数`create`:创建抽象线程的函数
@@ -59,13 +65,13 @@ const pool = createThreadPool({
 const r = await Promise.all(
     Array(10)
         .fill(0)
-        .map((_v, i) => pool.run((w) => w.echo(i)))
+        .map((_v, i) => pool.run((w) => w.echo(i))),
 );
 assertEquals(
     r,
     Array(10)
         .fill(0)
-        .map((_v, i) => i)
+        .map((_v, i) => i),
 );
 pool.destroy();
 ```
