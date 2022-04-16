@@ -36,6 +36,8 @@ https://github.com/masx200/universal-thread-pool/tree/main/test/test.ts
 
 ## 最简单的例子
 
+模拟一个线程池
+
 ```ts
 function sleep(timeout: number): Promise<void> {
     return new Promise<void>((resolve) => {
@@ -45,16 +47,18 @@ function sleep(timeout: number): Promise<void> {
     });
 }
 function create() {
-    return {
-        terminate() {
-            console.log("terminate");
-        },
-        async echo(a: number): Promise<number> {
-            await sleep(100);
-            return a;
-        },
-    };
-}
+let terminated=false
+        return {
+            terminate() {
+                terminated=true
+            },
+            async echo(a: number): Promise<number> {
+if(terminated){throw Error("terminated")}
+                await sleep(100);
+                return a;
+            },
+        };
+    }
 const pool = createThreadPool({
     create,
     terminate(w) {
