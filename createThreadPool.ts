@@ -50,6 +50,15 @@ export function createThreadPool<W>({
     terminate: (w: W) => void;
     maxThreads?: number;
 }): ThreadPool<W> {
+
+
+if(typeof created!=="function"){
+throw Error("expect create to be function:"+create)
+}
+
+if(typeof terminate!=="function"){
+throw Error("expect terminate to be function:"+terminate)
+}
     const queue = reactive(new Map<number, (w: W) => Promise<unknown>>());
     const destroyed = ref(false);
     let id = 0;
@@ -64,7 +73,9 @@ export function createThreadPool<W>({
             return;
         }
         if (free.value) {
-            next();
+            Promise.resolve().then(() => {
+                next();
+            });
         }
     });
     const threads: W[] = [];
@@ -81,7 +92,9 @@ export function createThreadPool<W>({
         id++;
         add(callback, task_id);
         if (free.value) {
-            next();
+            Promise.resolve().then(() => {
+                next();
+            });
         }
         return new Promise<R>((resolve, reject) => {
             const abort_listener = () => {
@@ -151,7 +164,7 @@ export function createThreadPool<W>({
             queue.delete(task_id);
             const w = get(task_id);
             pending.set(task_id, callback);
-            const p = callback(w);
+            const p = Promise.resolve(callback(w));
             p.finally(() => {
                 pending.delete(task_id);
                 results.set(task_id, p);
