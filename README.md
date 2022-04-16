@@ -30,6 +30,10 @@ import {} from "https://deno.land/x/masx200_universal_thread_pool@1.0.1/mod.ts";
 
 `threads`:可以查看所有的线程.
 
+`onPendingSizeChange`：添加监听器`callback`，当正在运行的任务数改变时，监听器被调用，返回一个停止监听的函数。
+
+`onQueueSizeChange`：添加监听器`callback`，当正在排队的任务数改变时，监听器被调用，返回一个停止监听的函数。
+
 ## 查看 web worker 例子
 
 https://github.com/masx200/universal-thread-pool/tree/main/test/test.ts
@@ -79,3 +83,6 @@ assertEquals(
 );
 pool.destroy();
 ```
+## 查看详细例子
+
+https://github.com/masx200/universal-thread-pool/blob/main/test/common.test.ts
