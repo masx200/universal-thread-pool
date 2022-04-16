@@ -9,11 +9,13 @@ Deno.test("ThreadPool-common", async () => {
         });
     }
     function create() {
+let terminated=false
         return {
             terminate() {
-                console.log("terminate");
+                terminated=true
             },
             async echo(a: number): Promise<number> {
+if(terminated){throw Error("terminated")}
                 await sleep(100);
                 return a;
             },
