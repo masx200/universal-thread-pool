@@ -17,7 +17,7 @@ let terminated=false
             async echo(a: number): Promise<number> {
 if(terminated){throw Error("terminated")}
                 await sleep(100);
-                return a;
+                return a*2;
             },
         };
     }
@@ -27,6 +27,7 @@ if(terminated){throw Error("terminated")}
             w.terminate();
         },
     });
+console.log("maxThreads",pool.maxThreads)
 const stop_callback_pending=pool.onPendingSizeChange(p=>console.log("pending size",p))
 const stop_callback_queue=pool.onQueueSizeChange(q=>console.log("queue size",q))
     const r = await Promise.all(
@@ -38,8 +39,9 @@ const stop_callback_queue=pool.onQueueSizeChange(q=>console.log("queue size",q))
         r,
         Array(10)
             .fill(0)
-            .map((_v, i) => i),
+            .map((_v, i) => i*2),
     );
+
     pool.destroy();
 stop_callback_queue()
 stop_callback_pending()
