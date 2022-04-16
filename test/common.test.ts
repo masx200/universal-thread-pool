@@ -27,6 +27,7 @@ if(terminated){throw Error("terminated")}
             w.terminate();
         },
     });
+const stop_callback_pending=pool.onPendingSizeChange(p=>console.log("pending size",p))
 const stop_callback_queue=pool.onQueueSizeChange(q=>console.log("queue size",q))
     const r = await Promise.all(
         Array(10)
@@ -41,5 +42,6 @@ const stop_callback_queue=pool.onQueueSizeChange(q=>console.log("queue size",q))
     );
     pool.destroy();
 stop_callback_queue()
+stop_callback_pending()
 });
 import { assertEquals } from "../deps.ts";
