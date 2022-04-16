@@ -10,7 +10,11 @@ https://www.npmjs.com/package/comlink
 
 ### `createThreadPool`:创建线程池,
 
-接受参数`create`:创建抽象线程的函数 接受参数`terminate`:结束抽象线程的函数 接受参数`maxThreads`:线程池中最多的线程数
+接受参数`create`:创建抽象线程的函数
+
+接受参数`terminate`:结束抽象线程的函数
+
+接受参数`maxThreads`:线程池中最多的线程数
 
 ### `ThreadPool`线程池接口
 
@@ -55,13 +59,13 @@ const pool = createThreadPool({
 const r = await Promise.all(
     Array(10)
         .fill(0)
-        .map((_v, i) => pool.run((w) => w.echo(i))),
+        .map((_v, i) => pool.run((w) => w.echo(i)))
 );
 assertEquals(
     r,
     Array(10)
         .fill(0)
-        .map((_v, i) => i),
+        .map((_v, i) => i)
 );
 pool.destroy();
 ```
