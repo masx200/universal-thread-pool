@@ -36,7 +36,7 @@ https://github.com/masx200/universal-thread-pool/tree/main/test/test.ts
 
 ## 最简单的例子
 
-模拟一个线程池
+模拟一个抽象线程，使用线程池运行函数，然后销毁线程池
 
 ```ts
 function sleep(timeout: number): Promise<void> {
