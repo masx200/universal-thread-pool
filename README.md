@@ -62,7 +62,7 @@ let terminated=false
             async echo(a: number): Promise<number> {
 if(terminated){throw Error("terminated")}
                 await sleep(100);
-                return a;
+                return a*2;
             },
         };
     }
@@ -82,7 +82,7 @@ assertEquals(
     r,
     Array(10)
         .fill(0)
-        .map((_v, i) => i),
+        .map((_v, i) => i*2),
 );
 pool.destroy();
 ```
