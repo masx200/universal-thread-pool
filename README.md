@@ -16,11 +16,11 @@ import {} from "https://deno.land/x/masx200_universal_thread_pool@1.0.1/mod.ts";
 
 ### `createThreadPool`:创建线程池,
 
-接受参数`create`:创建抽象线程的函数
+接受必选参数`create`:创建抽象线程的函数
 
-接受参数`terminate`:结束抽象线程的函数
+接受必选参数`terminate`:结束抽象线程的函数
 
-接受参数`maxThreads`:线程池中最多的线程数，默认为cpu个数
+接受可选参数`maxThreads`:线程池中最多的线程数，默认为cpu个数
 
 ### `ThreadPool`线程池接口
 
