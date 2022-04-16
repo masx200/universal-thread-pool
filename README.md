@@ -11,7 +11,7 @@ https://www.npmjs.com/package/comlink
 ## 导入模块
 
 ```ts
-import {} from "https://deno.land/x/masx200_universal_thread_pool@1.0.0/mod.ts";
+import {} from "https://deno.land/x/masx200_universal_thread_pool@1.0.1/mod.ts";
 ```
 
 ### `createThreadPool`:创建线程池,
