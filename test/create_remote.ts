@@ -7,7 +7,9 @@ export function create_remote(
     worker: Worker;
     remote: Remote<API>;
 } {
-    const w = new Worker("./woker.ts", { type: "module" });
+    const w = new Worker(new URL("./worker.ts", import.meta.url), {
+        type: "module",
+    });
     const remote = wrap<API>(w);
     w.addEventListener("error", error_event_listener);
     return { worker: w, remote };
