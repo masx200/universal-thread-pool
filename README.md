@@ -11,3 +11,4 @@ https://www.npmjs.com/package/comlink
 查看例子
 
 https://github.com/masx200/universal-thread-pool/tree/main/test/test.ts
+
