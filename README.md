@@ -12,7 +12,7 @@ https://www.npmjs.com/package/comlink
 
 接受参数`create`:创建抽象线程的函数 接受参数`terminate`:结束抽象线程的函数 接受参数`maxThreads`:线程池中最多的线程数
 
-###`ThreadPool`线程池接口
+### `ThreadPool`线程池接口
 
 `destroy`:销毁线程池中所有线程
 
