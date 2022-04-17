@@ -68,7 +68,7 @@ Deno.test("ThreadPool-worker", async () => {
     ];
 
     const results = await Promise.all(tasks.map((t) => pool.run(t)));
-    // console.log(pool);
+    // console.log(pool.threads.length);
     // pool.threads.forEach((w) =>
     //     w.worker.removeEventListener("error", error_event_listener)
     // );
