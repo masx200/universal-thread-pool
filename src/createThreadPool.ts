@@ -53,7 +53,7 @@ export function createThreadPool<W>({
 
     function run<R>(
         callback: (w: W) => Promise<R>,
-        signal?: AbortSignal
+        signal?: AbortSignal,
     ): Promise<R> {
         // debugger;
         if (destroyed.value) {
@@ -177,7 +177,7 @@ export function createThreadPool<W>({
         destroyed.value = true;
     }
     function onQueueSizeChange(
-        callback: (queueSize: number) => void
+        callback: (queueSize: number) => void,
     ): () => void {
         const r = effect(() => {
             callback(queue.size);
@@ -187,7 +187,7 @@ export function createThreadPool<W>({
         };
     }
     function onPendingSizeChange(
-        callback: (pendingSize: number) => void
+        callback: (pendingSize: number) => void,
     ): () => void {
         const r = effect(() => {
             callback(pending.size);
