@@ -1,2 +1,2 @@
-export { createThreadPool } from "./createThreadPool.ts";
-export type { ThreadPool } from "./createThreadPool.ts";
+export { createThreadPool } from "./src/createThreadPool.ts";
+export type { ThreadPool } from "./src/ThreadPool.ts";
