@@ -4,6 +4,8 @@ Universal thread pool 通用线程池
 
 适用于 `CPU` 密集型的任务的 通用线程池
 
+由于`JavaScript`有异步方式处理`IO`密集型任务,所以不应该在线程池中使用`IO`密集型任务.
+
 可以与 `comlink` 配合使用实现,浏览器或者 `deno` 的 `web worker` 线程池,或者 `nodejs` 的
 `worker_threads` 线程池
 
