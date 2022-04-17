@@ -27,6 +27,7 @@ export function create_remote<API>(
         worker: w,
         remote,
         terminate() {
+            // console.log("Terminating worker...");
             w.terminate();
         },
     };

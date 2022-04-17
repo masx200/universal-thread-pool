@@ -12,21 +12,21 @@ import { ThreadPool } from "./ThreadPool.ts";
 
 export function createThreadPool<W>({
     create,
-    onExit,
+    // onExit,
     terminate,
     maxThreads = get_cpu_Count(),
 }: {
     create: () => W;
     terminate: (w: W) => void;
     maxThreads?: number;
-    onExit(w: W, callback: () => void): () => void;
+    // onExit(w: W, callback: () => void): () => void;
 }): ThreadPool<W> {
     if (typeof create !== "function") {
         throw Error("expect create to be function:" + create);
     }
-    if (typeof onExit !== "function") {
-        throw Error("expect onExit to be function:" + onExit);
-    }
+    // if (typeof onExit !== "function") {
+    //     throw Error("expect onExit to be function:" + onExit);
+    // }
     if (typeof terminate !== "function") {
         throw Error("expect terminate to be function:" + terminate);
     }
@@ -124,10 +124,10 @@ export function createThreadPool<W>({
                 throw Error("thread created undefined");
             }
             threads.push(thread);
-            const stop_listen_exit = onExit(thread, () => {
-                stop_listen_exit();
-                remove_thread(thread);
-            });
+            // const stop_listen_exit = onExit(thread, () => {
+            //     stop_listen_exit();
+            //     remove_thread(thread);
+            // });
         }
         return threads[index];
     }

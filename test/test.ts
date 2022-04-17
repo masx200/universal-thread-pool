@@ -2,22 +2,23 @@ import { createThreadPool } from "../src/createThreadPool.ts";
 import { assertEquals } from "../deps.ts";
 import { create_remote } from "./create_remote.ts";
 import { API } from "./api.ts";
-import { WorkerWithExit } from "./WorkerWithExit.ts";
+// import { WorkerWithExit } from "./WorkerWithExit.ts";
 Deno.test("ThreadPool-worker", async () => {
     const pool = createThreadPool({
-        onExit(w, call) {
-            w.worker.addEventListener("exit", call);
-            return () => {
-                w.worker.removeEventListener("exit", call);
-            };
-        },
+        // onExit(w, call) {
+        //     w.worker.addEventListener("exit", call);
+        //     return () => {
+        //         w.worker.removeEventListener("exit", call);
+        //     };
+        // },
         create: () =>
             create_remote<API>(
                 function () {
-                    const w = WorkerWithExit(
-                        new Worker(new URL("./worker.ts", import.meta.url), {
+                    const w = /* WorkerWithExit */ new Worker(
+                        new URL("./worker.ts", import.meta.url),
+                        {
                             type: "module",
-                        }),
+                        },
                     );
                     const error_event_listener = function (
                         this: Worker,
@@ -80,6 +81,7 @@ Deno.test("ThreadPool-worker", async () => {
     // console.log(String(e));
     assertEquals(String(e), "Error: task signal aborted");
     pool.destroy();
+    //  console.log(pool.threads.length);
     stop_callback_queue();
     stop_callback_pending();
     assertEquals(
