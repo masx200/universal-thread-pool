@@ -12,13 +12,14 @@ import { ThreadPool } from "./ThreadPool.ts";
 
 export function createThreadPool<W>({
     create,
-
+    minThreads = 1,
     terminate,
     maxThreads = get_cpu_Count(),
 }: {
     create: () => W;
     terminate: (w: W) => void;
     maxThreads?: number;
+    minThreads?: number;
 }): ThreadPool<W> {
     if (typeof create !== "function") {
         throw Error("expect create to be function:" + create);
@@ -26,6 +27,14 @@ export function createThreadPool<W>({
 
     if (typeof terminate !== "function") {
         throw Error("expect terminate to be function:" + terminate);
+    }
+    if (minThreads > maxThreads || minThreads <= 0) {
+        throw new Error(
+            "minThreads must be smaller than maxThreads and greater than 0:" +
+                minThreads +
+                "," +
+                maxThreads,
+        );
     }
     const queue = reactive(new Map<number, (w: W) => Promise<unknown>>());
     const destroyed = ref(false);
@@ -47,7 +56,7 @@ export function createThreadPool<W>({
         }
     });
     const threads: W[] = [];
-
+    for (let i = 0; i < minThreads; i++) create_and_push_thread();
     function run<R>(
         callback: (w: W) => Promise<R>,
         signal?: AbortSignal,
@@ -116,14 +125,18 @@ export function createThreadPool<W>({
     function get(task_id: number): W {
         const index = task_id % maxThreads;
         while (typeof threads[index] === "undefined") {
-            const thread = create();
-            if (typeof thread === "undefined") {
-                throw Error("thread created undefined");
-            }
-            threads.push(thread);
+            create_and_push_thread();
         }
         return threads[index];
     }
+    function create_and_push_thread() {
+        const thread = create();
+        if (typeof thread === "undefined") {
+            throw Error("thread created undefined");
+        }
+        threads.push(thread);
+    }
+
     function remove_thread(thread: W) {
         const index = threads.findIndex((v) => thread === v);
         // if (index < 0) {
@@ -190,6 +203,7 @@ export function createThreadPool<W>({
         };
     }
     return {
+        minThreads,
         onPendingSizeChange,
         onQueueSizeChange,
         queueSize() {

@@ -1,5 +1,6 @@
 // import "./global.os.d.ts";
 export interface ThreadPool<W> {
+    minThreads: number;
     onQueueSizeChange(callback: (queueSize: number) => void): () => void;
     drain(): boolean;
     destroy: () => void;

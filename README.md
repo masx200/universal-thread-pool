@@ -31,6 +31,8 @@ import {} from "https://cdn.jsdelivr.net/gh/masx200/universal-thread-pool@1.0.3/
 
 接受可选参数`maxThreads`:线程池中最多的线程数，默认为 `cpu` 个数
 
+接受可选参数`minThreads`:线程池中最少的线程数，默认为 1.
+
 ### `ThreadPool`线程池接口
 
 `destroy`:销毁线程池中所有线程
