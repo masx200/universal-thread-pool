@@ -33,7 +33,7 @@ export function createThreadPool<W>({
     const queue = reactive(new Map<number, (w: W) => Promise<unknown>>());
     const destroyed = ref(false);
     let id = 0;
-    const pending = reactive(new Map<number, (w: W) => Promise<unknown>>());
+    const pending = reactive(new Map<number, W>());
     const results = reactive(new Map<number, Promise<unknown>>());
     const free /* : Ref<boolean> */ = computed(() => {
         return pending.size < maxThreads;
@@ -53,7 +53,7 @@ export function createThreadPool<W>({
 
     function run<R>(
         callback: (w: W) => Promise<R>,
-        signal?: AbortSignal,
+        signal?: AbortSignal
     ): Promise<R> {
         // debugger;
         if (destroyed.value) {
@@ -70,11 +70,13 @@ export function createThreadPool<W>({
         return new Promise<R>((resolve, reject) => {
             const abort_listener = () => {
                 reject(new Error("task signal aborted"));
-                s();
+                clean();
                 const maps = [queue, pending, results];
+                const w = pending.get(task_id);
                 maps.forEach((m) => m.delete(task_id));
+
                 // const index = task_id % maxThreads;
-                const w = get(task_id);
+                // const w = get(task_id);
                 remove_thread(w);
                 terminate(w);
             };
@@ -84,7 +86,7 @@ export function createThreadPool<W>({
                     abort_listener();
                 }
             }
-            function s() {
+            function clean() {
                 stop(d);
                 stop(e);
                 if (signal) {
@@ -96,7 +98,7 @@ export function createThreadPool<W>({
                 if (destroyed.value) {
                     reject(new Error("pool is destroyed"));
                     stop(d);
-                    s();
+                    clean();
                 }
             });
 
@@ -108,7 +110,7 @@ export function createThreadPool<W>({
                     resolve(result);
                     stop(e);
                     results.delete(task_id);
-                    s();
+                    clean();
                 }
             });
         });
@@ -153,7 +155,7 @@ export function createThreadPool<W>({
             const [task_id, callback] = [...queue.entries()][0];
             queue.delete(task_id);
             const w = get(task_id);
-            pending.set(task_id, callback);
+            pending.set(task_id, w);
             const p = Promise.resolve(callback(w));
             p.finally(() => {
                 pending.delete(task_id);
@@ -174,7 +176,7 @@ export function createThreadPool<W>({
         destroyed.value = true;
     }
     function onQueueSizeChange(
-        callback: (queueSize: number) => void,
+        callback: (queueSize: number) => void
     ): () => void {
         const r = effect(() => {
             callback(queue.size);
@@ -184,7 +186,7 @@ export function createThreadPool<W>({
         };
     }
     function onPendingSizeChange(
-        callback: (pendingSize: number) => void,
+        callback: (pendingSize: number) => void
     ): () => void {
         const r = effect(() => {
             callback(pending.size);
