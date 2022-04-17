@@ -5,6 +5,7 @@ export function WorkerWithExit(worker: Worker): Worker {
             return;
         }
         exited = true;
+        // console.log('Terminating worker...');
         Worker.prototype.terminate.call(worker);
         worker.dispatchEvent(new Event("exit"));
     }

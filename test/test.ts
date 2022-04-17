@@ -24,7 +24,7 @@ Deno.test("ThreadPool-worker", async () => {
                         event: ErrorEvent,
                     ) {
                         console.warn("Error event:", event);
-                        w.terminate();
+                        // w.terminate();
                         throw event;
                     };
                     w.addEventListener("error", error_event_listener);
@@ -109,7 +109,7 @@ Deno.test("ThreadPool-worker", async () => {
     );
     // console.log(pool);
     assertEquals(pool.destroyed(), true);
-    // await sleep(200)
+    // await sleep(2000)
 });
 
 // import { sleep } from "./sleep.ts";
