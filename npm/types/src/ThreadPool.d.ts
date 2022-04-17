@@ -3,7 +3,10 @@ export interface ThreadPool<W> {
     onQueueSizeChange(callback: (queueSize: number) => void): () => void;
     drain(): boolean;
     destroy: () => void;
-    run<R>(callback: (w: W) => Promise<R>, signal?: AbortSignal | undefined): Promise<R>;
+    run<R>(
+        callback: (w: W) => Promise<R>,
+        signal?: AbortSignal | undefined,
+    ): Promise<R>;
     maxThreads: number;
     [Symbol.toStringTag]: string;
     destroyed(): boolean;

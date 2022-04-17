@@ -18,5 +18,12 @@
             "indentWidth": 4,
             "singleQuote": false
         }
+    },
+    "lint": {
+        "files": {
+            "exclude": [
+                "npm"
+            ]
+        }
     }
 }

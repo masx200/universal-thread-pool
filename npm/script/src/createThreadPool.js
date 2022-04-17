@@ -4,7 +4,14 @@ exports.createThreadPool = void 0;
 // import type { Ref } from "./deps.ts";
 const deps_js_1 = require("../deps.js");
 const get_cpu_Count_js_1 = require("./get_cpu_Count.js");
-function createThreadPool({ create, minThreads = 1, terminate, maxThreads = (0, get_cpu_Count_js_1.get_cpu_Count)(), }) {
+function createThreadPool(
+    {
+        create,
+        minThreads = 1,
+        terminate,
+        maxThreads = (0, get_cpu_Count_js_1.get_cpu_Count)(),
+    },
+) {
     if (typeof create !== "function") {
         throw Error("expect create to be function:" + create);
     }
@@ -12,10 +19,12 @@ function createThreadPool({ create, minThreads = 1, terminate, maxThreads = (0, 
         throw Error("expect terminate to be function:" + terminate);
     }
     if (minThreads > maxThreads || minThreads <= 0) {
-        throw new Error("minThreads must be smaller than maxThreads and greater than 0:" +
-            minThreads +
-            "," +
-            maxThreads);
+        throw new Error(
+            "minThreads must be smaller than maxThreads and greater than 0:" +
+                minThreads +
+                "," +
+                maxThreads,
+        );
     }
     const queue = (0, deps_js_1.reactive)(new Map());
     const destroyed = (0, deps_js_1.ref)(false);
@@ -36,8 +45,9 @@ function createThreadPool({ create, minThreads = 1, terminate, maxThreads = (0, 
         }
     });
     const threads = [];
-    for (let i = 0; i < minThreads; i++)
+    for (let i = 0; i < minThreads; i++) {
         create_and_push_thread();
+    }
     function run(callback, signal) {
         // debugger;
         if (destroyed.value) {
