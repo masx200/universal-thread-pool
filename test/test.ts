@@ -1,5 +1,5 @@
 import { createThreadPool } from "../mod.ts";
-import { assertEquals } from "../deps.ts";
+import { assertEquals } from "./deps.ts";
 import { create_remote } from "./create_remote.ts";
 import { API } from "./api.ts";
 

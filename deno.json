@@ -5,9 +5,15 @@
     "tasks": {
         "udd": "udd '*.ts' '*/*.ts'",
         "install-udd": "deno install -A -f -n udd https://deno.land/x/udd@0.7.3/main.ts",
-        "test": "deno test --allow-read  --trace-ops"
+        "test": "deno test --allow-read  --trace-ops",
+        "build": "deno run -A build_npm.ts"
     },
     "fmt": {
+        "files": {
+            "exclude": [
+                "npm/node_modules"
+            ]
+        },
         "options": {
             "indentWidth": 4,
             "singleQuote": false

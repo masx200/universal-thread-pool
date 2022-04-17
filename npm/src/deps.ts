@@ -5,7 +5,7 @@ export {
     ref,
     shallowReadonly,
     stop,
-} from "https://esm.sh/@vue/reactivity@3.2.33/dist/reactivity.esm-bundler.js";
+} from "@vue/reactivity";
 
 // export {
 //     assert,
