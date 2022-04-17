@@ -1,3 +1,6 @@
+import { createThreadPool } from "../src/createThreadPool.ts";
+import { assertEquals } from "../deps.ts";
+import { create_remote } from "./create_remote.ts";
 import { API } from "./api.ts";
 import { WorkerWithExit } from "./WorkerWithExit.ts";
 Deno.test("ThreadPool-worker", async () => {
@@ -106,7 +109,7 @@ Deno.test("ThreadPool-worker", async () => {
     );
     // console.log(pool);
     assertEquals(pool.destroyed(), true);
+    // await sleep(200)
 });
-import { createThreadPool } from "../src/createThreadPool.ts";
-import { assertEquals } from "../deps.ts";
-import { create_remote } from "./create_remote.ts";
+
+// import { sleep } from "./sleep.ts";
