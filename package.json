@@ -1,6 +1,9 @@
 {
+    "publishConfig": {
+        "access": "public"
+    },
     "name": "@masx200/universal-thread-pool",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "Universal thread pool 通用线程池",
     "directories": {
         "test": "test"

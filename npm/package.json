@@ -3,7 +3,7 @@
   "main": "./script/mod.js",
   "types": "./types/mod.d.ts",
   "name": "@masx200/universal-thread-pool",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Universal thread pool 通用线程池",
   "license": "ISC",
   "repository": {
@@ -12,6 +12,9 @@
   },
   "bugs": {
     "url": "https://github.com/masx200/universal-thread-pool/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "directories": {
     "test": "test"

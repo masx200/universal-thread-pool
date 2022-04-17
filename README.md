@@ -18,11 +18,11 @@ https://www.npmjs.com/package/comlink
 指定版本号
 
 ```ts
-import {} from "https://deno.land/x/masx200_universal_thread_pool@1.0.4/mod.ts";
+import {} from "https://deno.land/x/masx200_universal_thread_pool@1.0.5/mod.ts";
 ```
 
 ```ts
-import {} from "https://cdn.jsdelivr.net/gh/masx200/universal-thread-pool@1.0.4/mod.ts";
+import {} from "https://cdn.jsdelivr.net/gh/masx200/universal-thread-pool@1.0.5/mod.ts";
 ```
 
 ### node
