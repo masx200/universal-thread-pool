@@ -77,8 +77,9 @@ export function createThreadPool<W>({
 
                 // const index = task_id % maxThreads;
                 // const w = get(task_id);
+
+                w && terminate(w);
                 remove_thread(w);
-                terminate(w);
             };
             if (signal) {
                 signal.addEventListener("abort", abort_listener);
