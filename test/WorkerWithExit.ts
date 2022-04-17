@@ -1,11 +1,13 @@
-export class WorkerWithExit extends Worker {
-    #exited = false;
-    terminate() {
-        if (this.#exited) {
+export function WorkerWithExit(worker: Worker): Worker {
+    let exited = false;
+    function terminate() {
+        if (exited) {
             return;
         }
-        this.#exited = true;
-        super.terminate();
-        this.dispatchEvent(new Event("exit"));
+        exited = true;
+        Worker.prototype.terminate.call(worker);
+        worker.dispatchEvent(new Event("exit"));
     }
+    worker.terminate = terminate;
+    return worker;
 }

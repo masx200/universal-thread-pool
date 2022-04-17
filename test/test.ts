@@ -1,3 +1,5 @@
+import { API } from "./api.ts";
+import { WorkerWithExit } from "./WorkerWithExit.ts";
 Deno.test("ThreadPool-worker", async () => {
     const pool = createThreadPool({
         onExit(w, call) {
@@ -6,7 +8,27 @@ Deno.test("ThreadPool-worker", async () => {
                 w.worker.removeEventListener("exit", call);
             };
         },
-        create: () => create_remote(error_event_listener),
+        create: () =>
+            create_remote<API>(
+                function () {
+                    const w = WorkerWithExit(
+                        new Worker(new URL("./worker.ts", import.meta.url), {
+                            type: "module",
+                        }),
+                    );
+                    const error_event_listener = function (
+                        this: Worker,
+                        event: ErrorEvent,
+                    ) {
+                        console.warn("Error event:", event);
+                        w.terminate();
+                        throw event;
+                    };
+                    w.addEventListener("error", error_event_listener);
+                    return w;
+                },
+                // error_event_listener
+            ),
         terminate(w) {
             w.terminate();
         },
@@ -20,11 +42,7 @@ Deno.test("ThreadPool-worker", async () => {
     );
     assertEquals(pool.destroyed(), false);
     // console.log(pool);
-    const error_event_listener = function (w: Worker, event: ErrorEvent) {
-        console.warn("Error event:", event);
-        w.terminate();
-        throw event;
-    };
+
     const tasks = [
         ...Array.from(
             { length: 10 },
