@@ -2,9 +2,10 @@
 
 Universal thread pool 通用线程池
 
-适用于 CPU 密集型的任务的 通用线程池
+适用于 `CPU` 密集型的任务的 通用线程池
 
-可以与 comlink 配合使用实现,浏览器或者 deno 的 web worker 线程池,或者 nodejs 的 worker_threads 线程池
+可以与 `comlink` 配合使用实现,浏览器或者 `deno` 的 `web worker` 线程池,或者 `nodejs` 的
+`worker_threads` 线程池
 
 https://www.npmjs.com/package/comlink
 
@@ -26,7 +27,7 @@ import {} from "https://cdn.jsdelivr.net/gh/masx200/universal-thread-pool@1.0.3/
 
 接受必选参数`terminate`:结束抽象线程的函数
 
-接受可选参数`maxThreads`:线程池中最多的线程数，默认为 cpu 个数
+接受可选参数`maxThreads`:线程池中最多的线程数，默认为 `cpu` 个数
 
 ### `ThreadPool`线程池接口
 
@@ -40,6 +41,6 @@ import {} from "https://cdn.jsdelivr.net/gh/masx200/universal-thread-pool@1.0.3/
 
 `onQueueSizeChange`：添加监听器`callback`，当正在排队的任务数改变时，监听器被调用，返回一个停止监听的函数。
 
-## 查看 web worker 例子
+## 查看 `web worker` 例子
 
 https://github.com/masx200/universal-thread-pool/tree/main/test/test.ts

@@ -5,12 +5,6 @@ import { API } from "./api.ts";
 
 Deno.test("ThreadPool-worker", async () => {
     const pool = createThreadPool({
-        // onExit(w, call) {
-        //     w.worker.addEventListener("exit", call);
-        //     return () => {
-        //         w.worker.removeEventListener("exit", call);
-        //     };
-        // },
         create: () =>
             create_remote<API>(
                 function () {
