@@ -2,7 +2,7 @@ import { createThreadPool } from "../src/createThreadPool.ts";
 import { assertEquals } from "../deps.ts";
 import { create_remote } from "./create_remote.ts";
 import { API } from "./api.ts";
-// import { WorkerWithExit } from "./WorkerWithExit.ts";
+
 Deno.test("ThreadPool-worker", async () => {
     const pool = createThreadPool({
         // onExit(w, call) {
@@ -14,7 +14,7 @@ Deno.test("ThreadPool-worker", async () => {
         create: () =>
             create_remote<API>(
                 function () {
-                    const w = /* WorkerWithExit */ new Worker(
+                    const w = new Worker(
                         new URL("./worker.ts", import.meta.url),
                         {
                             type: "module",

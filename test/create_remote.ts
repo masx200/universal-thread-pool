@@ -1,13 +1,11 @@
 // import { API } from "./api.ts";
 import { Remote, wrap } from "./deps.ts";
-// import { WorkerWithExit } from "./WorkerWithExit.ts";
+
 export function create_remote<API>(
     create_worker: () => Worker,
     // error_event_listener: (w: Worker, event: ErrorEvent) => void
 ): { terminate(): void; worker: Worker; remote: Remote<API> } {
-    const w =
-        // WorkerWithExit(
-        create_worker();
+    const w = create_worker();
     //     new URL("./worker.ts", import.meta.url), {
     //     type: "module",
     // }
