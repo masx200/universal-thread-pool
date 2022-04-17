@@ -1,14 +1,28 @@
 Deno.test("ThreadPool-worker", async () => {
     const pool = createThreadPool({
+        onExit(w, call) {
+            w.worker.addEventListener("exit", call);
+            return () => {
+                w.worker.removeEventListener("exit", call);
+            };
+        },
         create: () => create_remote(error_event_listener),
         terminate(w) {
-            w.worker.terminate();
+            w.terminate();
         },
     });
+    console.log("maxThreads", pool.maxThreads);
+    const stop_callback_pending = pool.onPendingSizeChange((p) =>
+        console.log("pending size", p)
+    );
+    const stop_callback_queue = pool.onQueueSizeChange((q) =>
+        console.log("queue size", q)
+    );
     assertEquals(pool.destroyed(), false);
     // console.log(pool);
-    const error_event_listener = function (this: Worker, event: ErrorEvent) {
+    const error_event_listener = function (w: Worker, event: ErrorEvent) {
         console.warn("Error event:", event);
+        w.terminate();
         throw event;
     };
     const tasks = [
@@ -34,9 +48,9 @@ Deno.test("ThreadPool-worker", async () => {
 
     const results = await Promise.all(tasks.map((t) => pool.run(t)));
     // console.log(pool);
-    pool.threads.forEach((w) =>
-        w.worker.removeEventListener("error", error_event_listener)
-    );
+    // pool.threads.forEach((w) =>
+    //     w.worker.removeEventListener("error", error_event_listener)
+    // );
     assertEquals(pool.maxThreads, navigator.hardwareConcurrency);
     const controller = new AbortController();
     const p = pool.run((w) => w.remote.add(100, 10), controller.signal);
@@ -45,6 +59,8 @@ Deno.test("ThreadPool-worker", async () => {
     // console.log(String(e));
     assert(String(e) === "Error: task signal aborted");
     pool.destroy();
+    stop_callback_queue();
+    stop_callback_pending();
     assertEquals(
         results,
         [
@@ -73,6 +89,6 @@ Deno.test("ThreadPool-worker", async () => {
     // console.log(pool);
     assertEquals(pool.destroyed(), true);
 });
-import { createThreadPool } from "../createThreadPool.ts";
+import { createThreadPool } from "../src/createThreadPool.ts";
 import { assert, assertEquals } from "../deps.ts";
 import { create_remote } from "./create_remote.ts";

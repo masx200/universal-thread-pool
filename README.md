@@ -4,7 +4,7 @@ Universal thread pool 通用线程池
 
 适用于 CPU 密集型的任务的 通用线程池
 
-可以与 comlink 配合使用实现,浏览器或者deno的web worker 线程池,或者 nodejs的 worker_threads 线程池
+可以与 comlink 配合使用实现,浏览器或者 deno 的 web worker 线程池,或者 nodejs 的 worker_threads 线程池
 
 https://www.npmjs.com/package/comlink
 
@@ -26,7 +26,7 @@ import {} from "https://cdn.jsdelivr.net/gh/masx200/universal-thread-pool@1.0.3/
 
 接受必选参数`terminate`:结束抽象线程的函数
 
-接受可选参数`maxThreads`:线程池中最多的线程数，默认为cpu个数
+接受可选参数`maxThreads`:线程池中最多的线程数，默认为 cpu 个数
 
 ### `ThreadPool`线程池接口
 
@@ -43,53 +43,3 @@ import {} from "https://cdn.jsdelivr.net/gh/masx200/universal-thread-pool@1.0.3/
 ## 查看 web worker 例子
 
 https://github.com/masx200/universal-thread-pool/tree/main/test/test.ts
-
-## 最简单的例子
-
-模拟一个抽象线程，使用线程池运行函数，然后销毁线程池
-
-```ts
-function sleep(timeout: number): Promise<void> {
-    return new Promise<void>((resolve) => {
-        setTimeout(() => {
-            resolve();
-        }, timeout);
-    });
-}
-function create() {
-    let terminated = false;
-    return {
-        terminate() {
-            terminated = true;
-        },
-        async echo(a: number): Promise<number> {
-            if (terminated) throw Error("terminated");
-            await sleep(100);
-            return a * 2;
-        },
-    };
-}
-const pool = createThreadPool({
-    create,
-    terminate(w) {
-        w.terminate();
-    },
-});
-
-const r = await Promise.all(
-    Array(10)
-        .fill(0)
-        .map((_v, i) => pool.run((w) => w.echo(i))),
-);
-assertEquals(
-    r,
-    Array(10)
-        .fill(0)
-        .map((_v, i) => i * 2),
-);
-pool.destroy();
-```
-
-## 查看详细例子
-
-https://github.com/masx200/universal-thread-pool/blob/main/test/common.test.ts

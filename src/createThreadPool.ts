@@ -6,54 +6,27 @@ import {
     ref,
     shallowReadonly,
     stop,
-} from "./deps.ts";
-// import "./global.os.d.ts";
-export interface ThreadPool<W> {
-    onQueueSizeChange(callback: (queueSize: number) => void): () => void;
-    drain(): boolean;
-    destroy: () => void;
-    run<R>(
-        callback: (w: W) => Promise<R>,
-        signal?: AbortSignal | undefined,
-    ): Promise<R>;
-    maxThreads: number;
-    [Symbol.toStringTag]: string;
-    destroyed(): boolean;
-    free(): boolean;
-    busy(): boolean;
-    threads: readonly W[];
-    queueSize(): number;
-    pendingSize(): number;
-    onPendingSizeChange(callback: (pendingSize: number) => void): () => void;
-}
-declare global {
-    // deno-lint-ignore no-explicit-any
-    const os: { cpus(): Array<any> };
-}
+} from "../deps.ts";
+import { get_cpu_Count } from "./get_cpu_Count.ts";
+import { ThreadPool } from "./ThreadPool.ts";
 
-const get_cpu_Count = function (): number {
-    if (typeof navigator !== "undefined") {
-        return navigator.hardwareConcurrency;
-    }
-
-    if (typeof os !== "undefined") {
-        return os.cpus().length;
-    }
-    return 1;
-};
 export function createThreadPool<W>({
     create,
+    onExit,
     terminate,
     maxThreads = get_cpu_Count(),
 }: {
     create: () => W;
     terminate: (w: W) => void;
     maxThreads?: number;
+    onExit(w: W, callback: () => void): () => void;
 }): ThreadPool<W> {
     if (typeof create !== "function") {
         throw Error("expect create to be function:" + create);
     }
-
+    if (typeof onExit !== "function") {
+        throw Error("expect onExit to be function:" + onExit);
+    }
     if (typeof terminate !== "function") {
         throw Error("expect terminate to be function:" + terminate);
     }
@@ -100,9 +73,10 @@ export function createThreadPool<W>({
                 s();
                 const maps = [queue, pending, results];
                 maps.forEach((m) => m.delete(task_id));
-                const index = task_id % maxThreads;
-                const w = threads.splice(index, 1);
-                terminate(w[0]);
+                // const index = task_id % maxThreads;
+                const w = get(task_id);
+                remove_thread(w);
+                terminate(w);
             };
             if (signal) {
                 signal.addEventListener("abort", abort_listener);
@@ -142,10 +116,28 @@ export function createThreadPool<W>({
     function get(task_id: number): W {
         const index = task_id % maxThreads;
         while (typeof threads[index] === "undefined") {
-            threads.push(create());
+            const thread = create();
+            if (typeof thread === "undefined") {
+                throw Error("thread created undefined");
+            }
+            threads.push(thread);
+            const stop_listen_exit = onExit(thread, () => {
+                stop_listen_exit();
+                remove_thread(thread);
+            });
         }
         return threads[index];
     }
+    function remove_thread(thread: W) {
+        const index = threads.findIndex((v) => thread === v);
+        // if (index < 0) {
+        //     throw Error("thread not found");
+        // }
+        if (index > 0) {
+            threads.splice(index, 1);
+        }
+    }
+
     function add<R>(callback: (w: W) => Promise<R>, task_id: number): void {
         queue.set(task_id, callback);
     }
