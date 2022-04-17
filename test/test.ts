@@ -14,11 +14,11 @@ Deno.test("ThreadPool-worker", async () => {
                     const w = WorkerWithExit(
                         new Worker(new URL("./worker.ts", import.meta.url), {
                             type: "module",
-                        }),
+                        })
                     );
                     const error_event_listener = function (
                         this: Worker,
-                        event: ErrorEvent,
+                        event: ErrorEvent
                     ) {
                         console.warn("Error event:", event);
                         w.terminate();
@@ -26,7 +26,7 @@ Deno.test("ThreadPool-worker", async () => {
                     };
                     w.addEventListener("error", error_event_listener);
                     return w;
-                },
+                }
                 // error_event_listener
             ),
         terminate(w) {
@@ -51,7 +51,8 @@ Deno.test("ThreadPool-worker", async () => {
                     remote: {
                         add: (arg0: number, arg1: number) => Promise<number>;
                     };
-                }) => w.remote.add(100, 1000),
+                }) =>
+                    w.remote.add(100, 1000)
         ),
         ...Array.from(
             { length: 10 },
@@ -60,7 +61,8 @@ Deno.test("ThreadPool-worker", async () => {
                     remote: {
                         add: (arg0: number, arg1: number) => Promise<number>;
                     };
-                }) => w.remote.add(1000, 1000),
+                }) =>
+                    w.remote.add(1000, 1000)
         ),
     ];
 
@@ -75,38 +77,20 @@ Deno.test("ThreadPool-worker", async () => {
     controller.abort();
     const e = await p.catch((e) => e);
     // console.log(String(e));
-    assert(String(e) === "Error: task signal aborted");
+    assertEquals(String(e), "Error: task signal aborted");
     pool.destroy();
     stop_callback_queue();
     stop_callback_pending();
     assertEquals(
         results,
         [
-            1100,
-            1100,
-            1100,
-            1100,
-            1100,
-            1100,
-            1100,
-            1100,
-            1100,
-            1100,
-            2000,
-            2000,
-            2000,
-            2000,
-            2000,
-            2000,
-            2000,
-            2000,
-            2000,
-            2000,
-        ],
+            1100, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 1100, 2000,
+            2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000,
+        ]
     );
     // console.log(pool);
     assertEquals(pool.destroyed(), true);
 });
 import { createThreadPool } from "../src/createThreadPool.ts";
-import { assert, assertEquals } from "../deps.ts";
+import { assertEquals } from "../deps.ts";
 import { create_remote } from "./create_remote.ts";
