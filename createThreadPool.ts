@@ -50,15 +50,13 @@ export function createThreadPool<W>({
     terminate: (w: W) => void;
     maxThreads?: number;
 }): ThreadPool<W> {
+    if (typeof create !== "function") {
+        throw Error("expect create to be function:" + create);
+    }
 
-
-if(typeof create!=="function"){
-throw Error("expect create to be function:"+create)
-}
-
-if(typeof terminate!=="function"){
-throw Error("expect terminate to be function:"+terminate)
-}
+    if (typeof terminate !== "function") {
+        throw Error("expect terminate to be function:" + terminate);
+    }
     const queue = reactive(new Map<number, (w: W) => Promise<unknown>>());
     const destroyed = ref(false);
     let id = 0;

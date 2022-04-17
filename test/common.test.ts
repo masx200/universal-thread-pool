@@ -9,15 +9,15 @@ Deno.test("ThreadPool-common", async () => {
         });
     }
     function create() {
-let terminated=false
+        let terminated = false;
         return {
             terminate() {
-                terminated=true
+                terminated = true;
             },
             async echo(a: number): Promise<number> {
-if(terminated){throw Error("terminated")}
+                if (terminated) throw Error("terminated");
                 await sleep(100);
-                return a*2;
+                return a * 2;
             },
         };
     }
@@ -27,9 +27,13 @@ if(terminated){throw Error("terminated")}
             w.terminate();
         },
     });
-console.log("maxThreads",pool.maxThreads)
-const stop_callback_pending=pool.onPendingSizeChange(p=>console.log("pending size",p))
-const stop_callback_queue=pool.onQueueSizeChange(q=>console.log("queue size",q))
+    console.log("maxThreads", pool.maxThreads);
+    const stop_callback_pending = pool.onPendingSizeChange((p) =>
+        console.log("pending size", p)
+    );
+    const stop_callback_queue = pool.onQueueSizeChange((q) =>
+        console.log("queue size", q)
+    );
     const r = await Promise.all(
         Array(10)
             .fill(0)
@@ -39,11 +43,11 @@ const stop_callback_queue=pool.onQueueSizeChange(q=>console.log("queue size",q))
         r,
         Array(10)
             .fill(0)
-            .map((_v, i) => i*2),
+            .map((_v, i) => i * 2),
     );
 
     pool.destroy();
-stop_callback_queue()
-stop_callback_pending()
+    stop_callback_queue();
+    stop_callback_pending();
 });
 import { assertEquals } from "../deps.ts";
