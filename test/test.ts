@@ -2,29 +2,13 @@ import { createThreadPool } from "../mod.ts";
 import { assertEquals } from "./deps.ts";
 import { create_remote } from "./create_remote.ts";
 import { API } from "./api.ts";
+import { create_worker } from "./create_worker.ts";
 
 Deno.test("ThreadPool-worker", async () => {
     const pool = createThreadPool({
         create: () =>
             create_remote<API>(
-                function () {
-                    const w = new Worker(
-                        new URL("./worker.ts", import.meta.url),
-                        {
-                            type: "module",
-                        },
-                    );
-                    const error_event_listener = function (
-                        this: Worker,
-                        event: ErrorEvent,
-                    ) {
-                        console.warn("Error event:", event);
-                        // w.terminate();
-                        throw event;
-                    };
-                    w.addEventListener("error", error_event_listener);
-                    return w;
-                },
+                create_worker,
                 // error_event_listener
             ),
         terminate(w) {
@@ -111,5 +95,3 @@ Deno.test("ThreadPool-worker", async () => {
     assertEquals(pool.destroyed(), true);
     // await sleep(2000)
 });
-
-// import { sleep } from "./sleep.ts";

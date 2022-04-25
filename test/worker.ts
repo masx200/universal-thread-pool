@@ -8,3 +8,8 @@ async function add(a: number, b: number): Promise<number> {
 }
 const api: API = { add };
 expose(api);
+
+// deno-lint-ignore ban-ts-comment
+//@ts-ignore
+// deno-lint-ignore no-explicit-any
+self.addEventListener("message", (e: MessageEvent<any>) => console.log(e.data));

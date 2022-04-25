@@ -1,5 +1,5 @@
 import { build, emptyDir } from "https://deno.land/x/dnt@0.23.0/mod.ts";
-import { assert } from "https://deno.land/std@0.135.0/testing/asserts.ts";
+import { assert } from "https://deno.land/std@0.136.0/testing/asserts.ts";
 const packagejson = JSON.parse(await Deno.readTextFile("./package.json"));
 assert(typeof packagejson === "object" && packagejson !== null);
 
