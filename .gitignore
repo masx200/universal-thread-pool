@@ -1,4 +1,5 @@
 npm
+.vscode
 # Logs
 logs
 *.log
