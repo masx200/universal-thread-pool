@@ -1,5 +1,5 @@
 import { build, emptyDir } from "https://deno.land/x/dnt@0.23.0/mod.ts";
-import { assert } from "https://deno.land/std@0.139.0/testing/asserts.ts";
+import { assert } from "https://deno.land/std@0.140.0/testing/asserts.ts";
 const packagejson = JSON.parse(await Deno.readTextFile("./package.json"));
 assert(typeof packagejson === "object" && packagejson !== null);
 
@@ -11,14 +11,10 @@ await build({
     test: false,
     packageManager: "yarn",
     mappings: {
-        // "https://cdn.skypack.dev/comlink@4.3.1?dts": {
-        //     name: "comlink",
-        //     version: "4.3.1",
-        // },
-        "https://esm.sh/@vue/reactivity@3.2.33/dist/reactivity.esm-bundler.js":
+        "https://esm.sh/@vue/reactivity@3.2.34-beta.1/dist/reactivity.esm-bundler.js":
             {
                 name: "@vue/reactivity",
-                version: "3.2.33",
+                version: "latest",
             },
     },
     entryPoints: ["./mod.ts"],

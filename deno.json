@@ -22,7 +22,8 @@
     "lint": {
         "files": {
             "exclude": [
-                "npm",".yarn"
+                "npm",
+                ".yarn"
             ]
         }
     }

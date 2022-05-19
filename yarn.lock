@@ -3,9 +3,28 @@
 
 __metadata:
   version: 6
+  cacheKey: 8
 
 "@masx200/universal-thread-pool@workspace:.":
   version: 0.0.0-use.local
   resolution: "@masx200/universal-thread-pool@workspace:."
+  dependencies:
+    "@vue/reactivity": latest
   languageName: unknown
   linkType: soft
+
+"@vue/reactivity@npm:latest":
+  version: 3.2.33
+  resolution: "@vue/reactivity@npm:3.2.33"
+  dependencies:
+    "@vue/shared": 3.2.33
+  checksum: fe801ea75fabfe95f414c32a79fee275917ef458b2b2f0f05834ae9bd4f65fefc9d25b62be55d680674ec4ef301b75ec45501f920efda780e70a214b21dfa02c
+  languageName: node
+  linkType: hard
+
+"@vue/shared@npm:3.2.33":
+  version: 3.2.33
+  resolution: "@vue/shared@npm:3.2.33"
+  checksum: 0083c9555b44f1c230079fac9270764e51af740f851101ae8972758fe6acf52184f76b4ab0c67a3840096d8f5a0988b99cae3046826b0f15af2431db6127ae48
+  languageName: node
+  linkType: hard
