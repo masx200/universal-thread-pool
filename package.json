@@ -3,7 +3,7 @@
         "access": "public"
     },
     "name": "@masx200/universal-thread-pool",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Universal thread pool 通用线程池",
     "directories": {
         "test": "test"
@@ -21,6 +21,6 @@
     "homepage": "https://github.com/masx200/universal-thread-pool#readme",
     "packageManager": "yarn@3.2.0",
     "dependencies": {
-        "@vue/reactivity": "latest"
+        "@vue/reactivity": "^3.2.36"
     }
 }

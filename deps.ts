@@ -5,4 +5,4 @@ export {
     ref,
     shallowReadonly,
     stop,
-} from "https://esm.sh/@vue/reactivity@3.2.34-beta.1/dist/reactivity.esm-bundler.js";
+} from "https://esm.sh/@vue/reactivity@3.2.36/dist/reactivity.esm-bundler.js";

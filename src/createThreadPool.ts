@@ -28,7 +28,7 @@ export function createThreadPool<W>({
     if (typeof terminate !== "function") {
         throw Error("expect terminate to be function:" + terminate);
     }
-    if (minThreads > maxThreads || minThreads <= 0) {
+    if (minThreads > maxThreads || minThreads < 0) {
         throw new Error(
             "minThreads must be smaller than maxThreads and greater than 0:" +
                 minThreads +
